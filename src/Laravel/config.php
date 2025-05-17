@@ -10,13 +10,16 @@
 
 return [
 
-    'app_name' => null, // defaults to Str::slug(config('app.name'))
+    'source_name' => null, // defaults to Str::slug(config('app.name'))
 
-    'keys' => [
-        'default' => [
-            'public' => env('SIGNED_URLS_PUBLIC_KEY'),
-            'private' => env('SIGNED_URLS_PRIVATE_KEY'),
-        ],
+    'key_provider' => \Actinity\SignedUrls\KeyProviders\ConfigKeyProvider::class,
+
+    'private_keys' => [
+        'default' => env('SIGNED_URLS_PRIVATE_KEY'),
+    ],
+
+    'public_keys' => [
+        'default' => env('SIGNED_URLS_PUBLIC_KEY'),
     ],
 
 ];

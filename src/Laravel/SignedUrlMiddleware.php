@@ -8,17 +8,12 @@ use Closure;
 
 class SignedUrlMiddleware
 {
-    private $service;
+    public function __construct(private SignedUrlService $service) {}
 
-    public function __construct(SignedUrlService $service)
-    {
-        $this->service = $service;
-    }
-
-    public function handle($request, Closure $next, $keyName = 'default')
+    public function handle($request, Closure $next, ?string $sourceName = null)
     {
         try {
-            $this->service->validate($request->fullUrl(), $keyName);
+            $this->service->validate($request->fullUrl(), $sourceName);
         } catch (InvalidSignedUrl $exception) {
             if (config('app.debug') || $request->expectsJson()) {
                 return response()->json($exception->errors(), 401);

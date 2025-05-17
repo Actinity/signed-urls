@@ -2,8 +2,10 @@
 
 namespace Actinity\SignedUrls\Laravel;
 
+use Actinity\SignedUrls\KeyProviders\ConfigKeyProvider;
 use Actinity\SignedUrls\SignedUrlService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class SignedUrlServiceProvider extends ServiceProvider
 {
@@ -26,7 +28,14 @@ class SignedUrlServiceProvider extends ServiceProvider
         app()->singleton(
             SignedUrlService::class,
             function () {
-                return new SignedUrlService;
+
+                $keyProviderClass = config('signed_urls.key_provider', ConfigKeyProvider::class);
+
+                return new SignedUrlService(
+                    sourceName: config('signed_urls.source_name', Str::slug(config('app.name'))),
+                    cacheBroker: new LaravelCacheBroker,
+                    keyProvider: new $keyProviderClass
+                );
             }
         );
     }

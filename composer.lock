@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48023176d92799c12263c4d3529d22c3",
+    "content-hash": "2d7a57553e541a0e345fd843cb38465c",
     "packages": [
         {
             "name": "hidehalo/nanoid-php",
@@ -8613,8 +8613,9 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1|^8.0",
-        "ext-openssl": "*"
+        "php": "^8.2",
+        "ext-openssl": "*",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

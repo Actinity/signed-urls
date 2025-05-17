@@ -13,7 +13,7 @@ class ConfigKeyProvider implements KeyProvider
      */
     public function getPrivateKey(string $keyName = 'default'): string
     {
-        $key = config('signed_urls.keys.'.$keyName.'.private');
+        $key = config('signed_urls.private_keys.'.$keyName);
         if (! $key) {
             throw new PrivateKeyNotFound;
         }
@@ -26,7 +26,7 @@ class ConfigKeyProvider implements KeyProvider
      */
     public function getPublicKey(string $keyName = 'default'): string
     {
-        $key = config('signed_urls.keys.'.$keyName.'.public');
+        $key = config('signed_urls.public_keys.'.$keyName);
         if (! $key) {
             throw new PublicKeyNotFound;
         }

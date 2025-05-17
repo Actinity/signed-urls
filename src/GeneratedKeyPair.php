@@ -2,11 +2,11 @@
 
 namespace Actinity\SignedUrls;
 
-class GeneratedKeyPair
+readonly class GeneratedKeyPair
 {
-    private $privateKey;
+    private string $privateKey;
 
-    private $publicKey;
+    private string $publicKey;
 
     public function __construct()
     {

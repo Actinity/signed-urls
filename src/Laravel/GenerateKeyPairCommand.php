@@ -11,7 +11,7 @@ class GenerateKeyPairCommand extends Command
 
     protected $description = 'Generate a public/private key pair for URL signing';
 
-    public function handle()
+    public function handle(): int
     {
         $pair = new GeneratedKeyPair;
 
@@ -21,5 +21,6 @@ class GenerateKeyPairCommand extends Command
         $this->warn('PUBLIC KEY');
         $this->info($pair->getPublic(! $this->option('raw')));
 
+        return self::SUCCESS;
     }
 }
