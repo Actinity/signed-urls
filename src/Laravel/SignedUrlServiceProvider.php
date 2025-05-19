@@ -29,7 +29,7 @@ class SignedUrlServiceProvider extends ServiceProvider
             SignedUrlService::class,
             function () {
 
-                $keyProviderClass = config('signed_urls.key_provider', ConfigKeyProvider::class);
+                $keyProviderClass = config('signed_urls.key_provider') ?: ConfigKeyProvider::class;
 
                 return new SignedUrlService(
                     sourceName: config('signed_urls.source_name', Str::slug(config('app.name'))),
