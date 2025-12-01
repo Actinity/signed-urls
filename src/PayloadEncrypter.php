@@ -5,9 +5,19 @@ use Actinity\SignedUrls\Exceptions\EncryptionError;
 
 class PayloadEncrypter
 {
+    public static function toBase64(string $string)
+    {
+        return strtr(base64_encode($string), '+/=', '-_.');
+    }
+
+    public static function fromBase64(string $string)
+    {
+        return base64_decode(strtr($string, '-_.', '+/='));
+    }
+
     public static function decrypt(string $encryptedPayload, string $privateKey, ?string $publicKey = null): string
     {
-        $payload = base64_decode($encryptedPayload);
+        $payload = static::fromBase64($encryptedPayload);
 
         $payload = unserialize($payload);
 
@@ -52,7 +62,7 @@ class PayloadEncrypter
     public static function encrypt(string $payload, string $publicKey): string
     {
         $data = self::encryptToArray($payload,$publicKey);
-        return base64_encode(serialize($data));
+        return static::toBase64(serialize($data));
     }
 
     public static function encryptAndSign(string $payload, string $publicKey, string $privateKey): string
@@ -64,7 +74,7 @@ class PayloadEncrypter
             OPENSSL_ALGO_SHA256
         );
 
-        return base64_encode(serialize(static::encryptToArray($payload,$publicKey,$signature)));
+        return static::toBase64(serialize(static::encryptToArray($payload,$publicKey,$signature)));
     }
 
     private static function getCipher()
