@@ -14,6 +14,18 @@ class KeyFormatter
         return self::fromString($string, true);
     }
 
+    public static function certificateFromString(string $string): string
+    {
+        if (substr($string, 0, 12) !== '-----BEGIN C') {
+            $string = trim($string);
+            $string = wordwrap($string, 64, "\n", true);
+            $string = "-----BEGIN CERTIFICATE-----\n".$string;
+            $string .= "\n-----END CERTIFICATE-----";
+        }
+
+        return $string;
+    }
+
     private static function fromString(string $string, bool $is_private = false): string
     {
         if (substr($string, 0, 12) !== '-----BEGIN P') {

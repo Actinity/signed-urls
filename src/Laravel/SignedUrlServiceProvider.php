@@ -13,6 +13,7 @@ class SignedUrlServiceProvider extends ServiceProvider
     {
         $this->commands([
             GenerateKeyPairCommand::class,
+            GenerateCertificate::class,
         ]);
 
         $this->publishes([
