@@ -20,8 +20,8 @@ class ArrayKeyProvider implements KeyProvider
      */
     public function getPrivateKey(string $keyName = 'default'): string
     {
-        if (array_key_exists($keyName, $this->keys) && ($this->keys[$keyName]['private'] ?? false)) {
-            return $this->keys[$keyName]['private'];
+        if (array_key_exists('private', $this->keys) && ($this->keys['private'][$keyName] ?? false)) {
+            return $this->keys['private'][$keyName];
         }
         throw new PrivateKeyNotFound;
     }
@@ -31,8 +31,8 @@ class ArrayKeyProvider implements KeyProvider
      */
     public function getPublicKey(string $keyName = 'default'): string
     {
-        if (array_key_exists($keyName, $this->keys) && ($this->keys[$keyName]['public'] ?? false)) {
-            return $this->keys[$keyName]['public'];
+        if (array_key_exists($keyName, $this->keys) && ($this->keys['public'][$keyName] ?? false)) {
+            return $this->keys['public'][$keyName];
         }
         throw new PublicKeyNotFound;
     }
