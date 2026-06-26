@@ -26,7 +26,7 @@ class PayloadEncrypter
             $payload['key'],
             $decryptedKey,
             KeyFormatter::privateFromString($privateKey),
-            OPENSSL_PKCS1_OAEP_PADDING
+            OPENSSL_PKCS1_PADDING
         );
 
         $decrypted = openssl_decrypt(
@@ -98,7 +98,7 @@ class PayloadEncrypter
             $key,
             $encrypted_key,
             KeyFormatter::publicFromString($publicKey),
-            OPENSSL_PKCS1_OAEP_PADDING
+            OPENSSL_PKCS1_PADDING
         );
 
         return [
