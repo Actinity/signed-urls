@@ -1,5 +1,7 @@
 <?php
 
+use Actinity\SignedUrls\KeyProviders\ConfigKeyProvider;
+
 /**
  * Manage keys for the Actinity/SignedUrls package.
  * Don't feel the need to load public and private keys if
@@ -12,7 +14,7 @@ return [
 
     'source_name' => null, // defaults to Str::slug(config('app.name'))
 
-    'key_provider' => \Actinity\SignedUrls\KeyProviders\ConfigKeyProvider::class,
+    'key_provider' => ConfigKeyProvider::class,
 
     'private_keys' => [
         'default' => env('SIGNED_URLS_PRIVATE_KEY'),

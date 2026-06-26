@@ -1,4 +1,5 @@
 <?php
+
 namespace Actinity\SignedUrls;
 
 use Actinity\SignedUrls\Exceptions\EncryptionError;
@@ -36,19 +37,19 @@ class PayloadEncrypter
             $payload['tag']
         );
 
-        static::validateSignature($decrypted,$payload['signature'] ?? null,$publicKey);
+        static::validateSignature($decrypted, $payload['signature'] ?? null, $publicKey);
 
         return $decrypted;
     }
 
     private static function validateSignature(string $payload, ?string $signature, ?string $publicKey): void
     {
-        if($signature) {
-            if(!$publicKey) {
+        if ($signature) {
+            if (! $publicKey) {
                 throw new EncryptionError('Payload is signed but no public key was provided');
             }
 
-            if(!openssl_verify(
+            if (! openssl_verify(
                 $payload,
                 $signature,
                 KeyFormatter::publicFromString($publicKey),
@@ -61,7 +62,8 @@ class PayloadEncrypter
 
     public static function encrypt(string $payload, string $publicKey): string
     {
-        $data = self::encryptToArray($payload,$publicKey);
+        $data = self::encryptToArray($payload, $publicKey);
+
         return static::toBase64(serialize($data));
     }
 
@@ -74,7 +76,7 @@ class PayloadEncrypter
             OPENSSL_ALGO_SHA256
         );
 
-        return static::toBase64(serialize(static::encryptToArray($payload,$publicKey,$signature)));
+        return static::toBase64(serialize(static::encryptToArray($payload, $publicKey, $signature)));
     }
 
     private static function getCipher()
@@ -88,17 +90,17 @@ class PayloadEncrypter
         $iv = random_bytes(openssl_cipher_iv_length(static::getCipher()));
 
         // Encrypt the data with a symmetric key
-        $encrypted_data = openssl_encrypt($payload,static::getCipher(),$key,0,$iv,$tag);
+        $encrypted_data = openssl_encrypt($payload, static::getCipher(), $key, 0, $iv, $tag);
 
         // Now use the public key to encrypt the symmetric key
-        openssl_public_encrypt($key,$encrypted_key,KeyFormatter::publicFromString($publicKey));
+        openssl_public_encrypt($key, $encrypted_key, KeyFormatter::publicFromString($publicKey));
 
         return [
             'iv' => $iv,
             'tag' => $tag,
             'payload' => $encrypted_data,
             'key' => $encrypted_key,
-            ...$signature ? ['signature' => $signature] : []
+            ...$signature ? ['signature' => $signature] : [],
         ];
     }
 }

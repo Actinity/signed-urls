@@ -16,8 +16,9 @@ class GenerateCertificate extends Command
         $privateKey = $this->argument('privateKey');
         $expiresInDays = (int) $this->option('expiresInDays');
 
-        if(!$expiresInDays) {
+        if (! $expiresInDays) {
             $this->error('Expires in days must be a positive integer.');
+
             return 1;
         }
 
@@ -25,8 +26,9 @@ class GenerateCertificate extends Command
             $privateKey = config('signed_urls.private_keys.default');
         }
 
-        if(!$privateKey) {
+        if (! $privateKey) {
             $this->error('No private key found. Configure signed_urls.private_keys.default or provide one');
+
             return 1;
         }
 
@@ -38,7 +40,6 @@ class GenerateCertificate extends Command
             'organizationName' => $this->option('organizationName') ?: config('app.name'),
         ];
 
-
         $csr = openssl_csr_new($config, $privateKey);
         $cert = openssl_csr_sign($csr, null, $privateKey, $expiresInDays);
 
@@ -47,12 +48,11 @@ class GenerateCertificate extends Command
         $this->warn('CERTIFICATE');
         $this->info($cert);
 
-
         $this->warn('CERTIFICATE AS STRING');
         $this->info(KeyFormatter::toString($cert));
 
         $this->warn('CERTIFICATE CONFIGURATION');
-        $this->info(json_encode([...$config,'expiresInDays' => $expiresInDays],JSON_PRETTY_PRINT));
+        $this->info(json_encode([...$config, 'expiresInDays' => $expiresInDays], JSON_PRETTY_PRINT));
 
         return 0;
     }
