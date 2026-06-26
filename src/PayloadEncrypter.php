@@ -25,7 +25,8 @@ class PayloadEncrypter
         openssl_private_decrypt(
             $payload['key'],
             $decryptedKey,
-            KeyFormatter::privateFromString($privateKey)
+            KeyFormatter::privateFromString($privateKey),
+            OPENSSL_PKCS1_OAEP_PADDING
         );
 
         $decrypted = openssl_decrypt(
@@ -93,7 +94,12 @@ class PayloadEncrypter
         $encrypted_data = openssl_encrypt($payload, static::getCipher(), $key, 0, $iv, $tag);
 
         // Now use the public key to encrypt the symmetric key
-        openssl_public_encrypt($key, $encrypted_key, KeyFormatter::publicFromString($publicKey));
+        openssl_public_encrypt(
+            $key,
+            $encrypted_key,
+            KeyFormatter::publicFromString($publicKey),
+            OPENSSL_PKCS1_OAEP_PADDING
+        );
 
         return [
             'iv' => $iv,

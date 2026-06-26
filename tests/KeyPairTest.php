@@ -10,9 +10,7 @@ class KeyPairTest extends TestCase
     {
         $pair = new GeneratedKeyPair;
 
-        openssl_private_encrypt('test string', $encrypted, $pair->getPrivate());
-        openssl_public_decrypt($encrypted, $decrypted, $pair->getPublic());
-
-        $this->assertEquals('test string', $decrypted);
+        openssl_sign('test string', $signature, $pair->getPrivate());
+        $this->assertSame(1, openssl_verify('test string', $signature, $pair->getPublic()));
     }
 }
